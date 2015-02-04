@@ -1,0 +1,59 @@
+---
+title: "GGPlot2 Library"
+author: "Ramesh Kumar Surapathi"
+output: html_document
+---
+```{r}
+setwd('/Users/surapathiramesh/Downloads/EDA_Course_Materials/lesson3')
+library(ggplot2)
+fbdata <- read.csv('pseudo_facebook.tsv', sep='\t')
+
+qplot(x=friend_count,data=fbdata,binwidth=25) + scale_x_continuous(limits = c(0,1000), breaks = seq(0,1000,50)) + facet_wrap(~gender,ncol=3)
+
+```
+
+Colored Histograms
+
+```{r}
+qplot(x=friend_count,data=fbdata,binwidth=30,color=I('black'),fill=I('blue')) + scale_x_continuous(limits = c(0,1000), breaks = seq(0,1000,50))
+
+
+```
+
+```{r}
+
+qplot(x=tenure/365,data=fbdata,xlab='Number of Years', ylab='Number of Users',binwidth=0.25,color=I('black'),fill=I('orange'))+scale_x_continuous(limits=c(0,8))
+
+qplot(x=age,data=fbdata,binwidth=5, xlab="Age of Facebook Users",ylab='Number of Users',
+      color=I('black'),fill=I('orange'))+scale_x_continuous(limits=c(12,100))
+```
+
+
+# Histograms 
+#scale_x_discrete breaks the x axis into 1:31 discrete values
+#facet_wrap(~variable) - to divide histogram into small histograms based on any variable
+
+
+```{r}
+
+qplot(x=dob_day,data=fbdata) + scale_x_discrete(1:31) + facet_wrap(~dob_month,ncol=3)
+```
+
+Mulitple plots using grid extra package
+
+```{r}
+library('gridExtra')
+p1 <- qplot(x=friend_count,data=fbdata)
+p2 <- qplot(x=log10(friend_count+1),data=fbdata)
+p3 <- qplot(x=sqrt(friend_count),data=fbdata)
+grid.arrange(p1,p2,p3,ncol=1)
+
+```
+
+Frequency Polygons
+
+```{r}
+qplot(x=likes,data=fbdata,xlab="Likes made by Facebook Users",ylab="Number of Facebook Users", geom='freqpoly',color=gender,binwidth=1)+scale_x_continuous(limits=c(0,10))
+
+```
+
